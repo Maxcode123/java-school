@@ -10,8 +10,10 @@ import java.util.stream.Stream;
 
 
 public class Config {
+    // Config class. Responsible for storing and loading serialized objects.
     
     public static void storeSerializedAnimals() {
+        // Creates and serializes animals.
         Animal[] animals = createAnimals();
         for (int i = 0; i < animals.length; i++) {
             serialize(animals[i], "animals/" + animals[i].name);
@@ -19,14 +21,18 @@ public class Config {
     }
 
     public static void storeAnimal(Animal animal) {
-
+        // Serializes given animal.
+        serialize(animal, "animals/" + animal.name);
     }
 
     public static void removeAnimal(Animal animal) {
-        
+        // Deletes serialized animal.
+        File serializedAnimal = new File("animals/" + animal.name);
+        serializedAnimal.delete();
     }
 
     public static List<Animal> loadAnimals() {
+        // Loads all serialized animals.
         List<Animal> animals = new LinkedList<Animal>();
         try{
             for (String filename : listStoredAnimalFiles()) {
@@ -40,6 +46,7 @@ public class Config {
     }
 
     private static Set<String> listStoredAnimalFiles() throws IOException {
+        // Returns all serialized animal filenames.
         try (Stream<Path> stream = Files.list(Paths.get("animals"))) {
             return stream
             .filter(file -> !Files.isDirectory((file)))
@@ -50,6 +57,7 @@ public class Config {
     }
 
     private static void serialize(Animal animal, String filename) {
+        // Serializes given animal to given filename.
         try {
             FileOutputStream fos = new FileOutputStream(filename);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -64,6 +72,7 @@ public class Config {
     }
 
     private static Animal deserialize(String filename) {
+        // Deserializes given filename into an animal.
         try {
             FileInputStream fis = new FileInputStream(filename);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -83,14 +92,15 @@ public class Config {
     }
     
     private static Animal[] createAnimals() {
-        Animal tiger = new Animal("TG", "tiger", Classis.Mammal, 200.0, 33);
-        Animal lion = new Animal("LN", "lion", Classis.Mammal, 220.0, 35);
-        Animal lizard = new Animal("LZ", "lizard", Classis.Reptile, 0.450, 3);
-        Animal turtle = new Animal("TL", "turtle", Classis.Reptile, 5.5, 90);
-        Animal eagle = new Animal("EG", "eagle", Classis.Bird, 12.5, 15);
-        Animal parrot = new Animal("PR", "parrot", Classis.Bird, 2.3, 12);
-        Animal frog = new Animal("FR", "frog", Classis.Amphibian, 1.1, 11);
-        Animal salamander = new Animal("SL", "salamander", Classis.Amphibian, 1.2, 5);
+        // Creates and array of initial animals.
+        Carnivore tiger = new Carnivore("TG", "tiger", Classis.Mammal, 200.0, 33);
+        Carnivore lion = new Carnivore("LN", "lion", Classis.Mammal, 220.0, 35);
+        Herbivore lizard = new Herbivore("LZ", "lizard", Classis.Reptile, 0.450, 3);
+        Herbivore turtle = new Herbivore("TL", "turtle", Classis.Reptile, 5.5, 90);
+        Carnivore eagle = new Carnivore("EG", "eagle", Classis.Bird, 12.5, 15);
+        Herbivore parrot = new Herbivore("PR", "parrot", Classis.Bird, 2.3, 12);
+        Herbivore frog = new Herbivore("FR", "frog", Classis.Amphibian, 1.1, 11);
+        Herbivore salamander = new Herbivore("SL", "salamander", Classis.Amphibian, 1.2, 5);
         Animal[] animals = {tiger, lion, lizard, turtle, eagle, parrot, frog, salamander};
         return animals;
     }

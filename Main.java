@@ -1,7 +1,9 @@
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Main {
+    // Main class, entrypoint to application.
 
     static List<Animal> animals;
     static Scanner scanner = new Scanner(System.in);
@@ -54,6 +56,7 @@ public class Main {
     }
 
     private static void welcomeMessage() {
+        // Prints application welcome message, usage guide.
         System.out.print("""
             Welcome to the Zoo!
             0. Print this message
@@ -68,12 +71,14 @@ public class Main {
     }
 
     private static void printAnimals() {
+        // Prints all animals in Main.animals.
         for (Animal a : animals) {
             System.out.println(a);
         }        
     }
 
     private static void addAnimal() {
+        // Adds an animal to the class storage: Main.animals and serializes it.
         System.out.print("code: ");
         String code = scanner.next();
         
@@ -95,6 +100,7 @@ public class Main {
     }
 
     private static Classis toEnum(int classis) {
+        // Converts an int to Classis enum.
         switch (classis) {
             case 1:
             return Classis.Mammal;
@@ -110,6 +116,7 @@ public class Main {
     }
 
     private static void searchAnimal(boolean byCode) {
+        // Prompts for code or name and prints the corresponding animal.
         String field;
         if (byCode) field = "code";
         else field = "name";
@@ -125,6 +132,7 @@ public class Main {
     }
 
     private static void deleteAnimal() {
+        // Prompts for code and deletes the corresponding animal.
         System.out.print("code: ");
         String code = scanner.next();
 
@@ -138,12 +146,13 @@ public class Main {
     }
 
     private static void feedAnimal() {
+        // Prompts for code and feeds the corresponding animal.
         System.out.print("code: ");
         String code = scanner.next();
 
         for (Animal a: animals) {
             if (a.code.equals(code)) {
-                a.status = "fed";
+                a.feed();
                 System.out.println(a.name + " fed.");
                 return;
             }
